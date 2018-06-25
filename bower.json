@@ -5,6 +5,7 @@
     "build/content-tools.js",
     "build/content-tools.min.css",
     "build/icons.woff",
+    "build/icons-barebones.woff",
     "build/images/drop-horz.svg",
     "build/images/drop-vert-above.svg",
     "build/images/drop-vert-below.svg",

@@ -39,6 +39,9 @@ module.exports = (grunt) ->
                         'src/scripts/history.coffee'
                         'src/scripts/styles.coffee'
                         'src/scripts/tools.coffee'
+
+                        # Barebones CMS
+                        'src/scripts/barebones.coffee'
                     ]
 
             sandbox:
@@ -115,6 +118,7 @@ module.exports = (grunt) ->
             build:
                 src: [
                     'external/scripts/content-edit.js'
+                    'external/scripts/content-edit-barebones.js'
                     'src/tmp/content-tools.js'
                 ]
                 dest: 'build/content-tools.js'

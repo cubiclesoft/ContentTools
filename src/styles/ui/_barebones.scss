@@ -1,0 +1,489 @@
+/**
+ * Custom styles for Barebones CMS tools.
+ */
+
+.ct-widget {
+
+    .ct-tool {
+
+        &--h1:before { content: "H"; font-weight: bold; }
+        &--h2:before { content: "H"; font-weight: bold; font-size: 15px; }
+        &--h3:before { content: "H"; font-weight: bold; font-size: 14px; }
+        &--h4:before { content: "H"; font-size: 13px; }
+        &--h5:before { content: "H"; font-size: 12px; }
+        &--h6:before { content: "H"; font-size: 11px; }
+        &--blockquote:before { font-family: 'icon-barebones'; content: "\e977"; }
+        &--address:before { font-family: 'icon-barebones'; content: "\e947"; }
+        &--embed:before { font-family: 'icon-barebones'; content: "\ea7f"; }
+        &--insert-file:before { font-family: 'icon-barebones'; content: "\e931"; }
+        &--crop-image:before { content: "\ea57"; }
+
+    } // .ct-tool
+
+
+    /**
+     * The embed dialog supports the insertion of generic but valid HTML.
+     */
+    .ct-embed-dialog {
+
+        &__textarea {
+            border: 1px solid #eee;
+            display: block;
+            font-family: courier, $monospace;
+            width: 100%;
+            height: 100%;
+            padding: 1em;
+            outline: none;
+            resize: none;
+
+            &:focus {
+                border: 1px solid darken(#eee, 5%);
+            }
+
+            &--invalid {
+                color: $cancel-action-color;
+            }
+        }
+
+        &__input {
+            display: block;
+            border: none;
+            border-bottom: 1px solid #eee;
+            height: 32px;
+            line-height: 32px;
+            outline: none;
+            padding: 0 4px;
+            @include type-text;
+            vertical-align: top;
+            width: 100%;
+
+            &:focus {
+                border-bottom: 1px solid darken(#eee, 5%);
+            }
+        }
+
+    }
+
+
+    /**
+     * The embed template dialog supports the display and management of custom embed templates.
+     */
+    .ct-embed-template-dialog {
+
+        &__view {
+            border: 1px solid #ddd;
+            overflow: auto;
+        }
+
+        &__select {
+            display: block;
+            border: none;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+            height: 48px;
+            outline: none;
+            padding: 0 0.5em;
+            @include type-text($font-size: 18px, $line-height: 48px);
+            vertical-align: top;
+            color: $text-color;
+
+            &:focus {
+                border-bottom: 1px solid darken(#eee, 5%);
+            }
+        }
+
+    }
+
+    &.ct-embed-template-dialog {
+        .ct-section {
+
+            &__label {
+                width: 50%;
+                border-right: 1px solid #eee;
+            }
+
+            &__input-wrap {
+                width: 50%;
+            }
+
+            &__input {
+                text-align: initial;
+
+                &--invalid {
+                    font-weight: bold;
+                }
+            }
+
+            &__textarea-wrap {
+                height: 150px;
+            }
+
+            &__file-wrap {
+                height: 62px;
+            }
+
+        }
+    }
+
+
+    /**
+     * The preview modal dialog supports the display of a previewable resource (e.g. an image).
+     */
+    &.ct-preview-modal {
+        z-index: $base-z-index + 200;
+    }
+
+    .ct-preview-modal-inner {
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        width: 80%;
+        height: 80%;
+        text-align: center;
+
+        img, audio, video {
+            position: relative;
+            top: 50%;
+            transform: perspective(1px) translateY(-50%);
+        }
+
+        img, video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        audio {
+            width: 100%;
+        }
+
+    }
+
+
+    /**
+     * The file dialog supports the insertion of managed files.
+     */
+    .ct-insert-file-dialog {
+
+        &__view {
+            border: 1px solid #ddd;
+            overflow: auto;
+        }
+
+        &__search,
+        &__upload {
+            display: none;
+
+            &--active {
+                display: block;
+            }
+        }
+
+        &__search-fields-wrapper {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        &__search-fields {
+            display: table-row;
+        }
+
+        &__search-field-left {
+            display: table-cell;
+            width: 100%;
+            vertical-align: top;
+        }
+
+        &__search-field-right {
+            display: table-cell;
+            vertical-align: top;
+        }
+
+        &__search-input {
+            display: block;
+            border: none;
+            border-bottom: 1px solid #eee;
+            height: 48px;
+            outline: none;
+            padding: 0 1em;
+            @include type-text($font-size: 18px, $line-height: 48px);
+            vertical-align: top;
+            width: 100%;
+            color: $text-color;
+
+            &:focus {
+                border-bottom: 1px solid darken(#eee, 5%);
+            }
+        }
+
+        &__search-limit {
+            display: block;
+            border: none;
+            border-bottom: 1px solid #eee;
+            border-left: 1px solid #eee;
+            height: 48px;
+            outline: none;
+            padding: 0 0.5em;
+            @include type-text($font-size: 18px, $line-height: 48px);
+            vertical-align: top;
+            color: $text-color;
+
+            &:focus {
+                border-bottom: 1px solid darken(#eee, 5%);
+            }
+        }
+
+    }
+
+
+    /**
+     * The crop image dialog supports custom cropping ratios.
+     */
+    .ct-crop-image-dialog {
+
+        &__view {
+            border: 1px solid #ddd;
+            overflow: auto;
+        }
+
+        &__ratios {
+            float: left;
+            min-width: 130px;
+            width: 25%;
+            height: 100%;
+            overflow: auto;
+            border-right: 1px solid #ddd;
+        }
+
+        &__crop {
+            overflow: auto;
+        }
+
+    }
+
+
+    .ct-section {
+
+        &--error {
+            font-weight: bold;
+            color: $cancel-action-color;
+        }
+
+        &--title {
+            font-weight: bold;
+            cursor: default;
+            color: $text-color;
+            font-style: normal;
+        }
+
+        &--applied {
+            .ct-section__checkbox {
+                color: $confirm-action-color;
+
+                &::before {
+                    content: "\ea52";
+                }
+
+                &:hover {
+                    color: lighten($confirm-action-color, 5%);
+                }
+            }
+
+            .ct-section__radio {
+                color: $confirm-action-color;
+
+                &::before {
+                    content: "\ea54";
+                }
+
+                &:hover {
+                    color: lighten($confirm-action-color, 5%);
+                }
+            }
+        }
+
+        &__icon {
+            display: table-cell;
+            color: lighten($text-color, 25%);
+            font-style: normal;
+            cursor: pointer;
+            border-left: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 0.85em 1em;
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            content: "";
+
+            &:hover {
+                color: $confirm-action-color;
+            }
+        }
+
+        &__checkbox {
+            border-left: 0 none;
+            padding-right: 0;
+            vertical-align: top;
+
+            &::before {
+                font-family: 'icon-barebones';
+                content: "\ea53";
+            }
+
+            &:hover {
+                color: lighten($text-color, 30%);
+            }
+        }
+
+        &__radio {
+            border-left: 0 none;
+            padding-right: 0;
+            vertical-align: top;
+
+            &::before {
+                font-family: 'icon-barebones';
+                content: "\ea56";
+            }
+
+            &:hover {
+                color: lighten($text-color, 30%);
+            }
+        }
+
+        &__preview::before {
+            font-family: 'icon-barebones';
+            content: "\e9ce";
+        }
+
+        &__new-tab::before {
+            font-family: 'icon-barebones';
+            content: "\ea7e";
+        }
+
+        &__mode-normal::before {
+            font-family: 'icon-barebones';
+            content: "\ea0b";
+        }
+
+        &__mode-image::before {
+            font-family: 'icon';
+            content: "\e90d";
+        }
+
+        &__mode-embed::before {
+            font-family: 'icon-barebones';
+            content: "\ea7f";
+        }
+
+        &__mode-link::before {
+            font-family: 'icon';
+            content: "\e9cb";
+        }
+
+        &__mode-download::before {
+            font-family: 'icon-barebones';
+            content: "\e9c7";
+        }
+
+    }
+
+    .ct-control {
+
+        &--icon-search {
+            &:before {
+                font-family: 'icon-barebones';
+                content: '\e986';
+            }
+        }
+
+        &--icon-upload {
+            &:before {
+                font-family: 'icon-barebones';
+                content: '\e9c3';
+            }
+        }
+
+        /* The Arial font displays the "Te" in "Templates..." in bold incorrectly. */
+        &--templates::first-letter {
+            letter-spacing: .5px;
+        }
+
+    }
+
+} // .ct-widget
+
+.ce-element {
+
+    &--type-embed {
+        background: #333 url($image-path-prefix + 'embed.svg') center / auto 48px no-repeat;
+        position: relative;
+        cursor: pointer;
+        z-index: 1;
+
+        &:after,
+        &:before {
+            background: rgba(black, 0.5);
+            border-radius: 2px;
+            color: white;
+            display: none;
+            font-family: arial, sans-serif;
+            font-size: 10px;
+            line-height: 10px;
+            padding: 4px 4px 3px;
+            position: absolute;
+        }
+
+        &:before {
+            display: block;
+            content: attr(data-ce-title);
+            left: 10px;
+            top: 10px;
+        }
+
+    }
+
+    &--dragging {
+        /**
+         * For embeds we set the outline color instead of changing the inner style.
+         */
+        &.ce-element--type-embed {
+            background-color: #333 !important;
+            opacity: 1.0;
+            outline-color: rgba(#333, 0.1) !important;
+        }
+    }
+
+    &--focused,
+    &--over {
+        /**
+         * For embeds we add an outline so as not to distort their appearance.
+         */
+        &.ce-element--type-embed {
+            background-color: #333;
+            outline: 4px solid rgba($highlight-color, 0.35);
+        }
+    }
+
+}
+
+.ce-element--type-embed {
+    background-color: #333;
+    width: 400px;
+    height: 300px;
+    max-width: 100%;
+    max-height: 50vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    &.align-left {
+        clear: initial;
+        float: left;
+    }
+
+    &.align-right {
+        clear: initial;
+        float: right;
+    }
+
+}
