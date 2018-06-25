@@ -1966,6 +1966,12 @@
       });
     };
 
+    Node.prototype.nextNavigable = function() {
+      return this.nextWithTest(function(node) {
+        return node.navigate !== void 0;
+      });
+    };
+
     Node.prototype.nextSibling = function() {
       var index;
       index = this.parent().children.indexOf(this);
@@ -2006,6 +2012,13 @@
       var node;
       return node = this.previousWithTest(function(node) {
         return node.content !== void 0;
+      });
+    };
+
+    Node.prototype.previousNavigable = function() {
+      var node;
+      return node = this.previousWithTest(function(node) {
+        return node.navigate !== void 0;
       });
     };
 
@@ -3394,6 +3407,7 @@
           this.content = new HTMLString.String(content, true);
         }
       }
+      this.navigate = true;
     }
 
     Text.prototype.cssTypeName = function() {
@@ -3602,7 +3616,7 @@
     Text.prototype._keyBack = function(ev) {
       var previous, selection;
       selection = ContentSelect.Range.query(this._domElement);
-      if (!(selection.get()[0] === 0 && selection.isCollapsed())) {
+      if (!(this._atStart(selection) && selection.isCollapsed())) {
         return;
       }
       ev.preventDefault();
@@ -3633,15 +3647,18 @@
     Text.prototype._keyLeft = function(ev) {
       var previous, selection;
       selection = ContentSelect.Range.query(this._domElement);
-      if (!(selection.get()[0] === 0 && selection.isCollapsed())) {
+      if (!(this._atStart(selection) && selection.isCollapsed())) {
         return;
       }
       ev.preventDefault();
-      previous = this.previousContent();
+      ev.stopPropagation();
+      previous = this.previousNavigable();
       if (previous) {
         previous.focus();
-        selection = new ContentSelect.Range(previous.content.length(), previous.content.length());
-        return selection.select(previous.domElement());
+        if (previous.content !== void 0) {
+          selection = new ContentSelect.Range(previous.content.length(), previous.content.length());
+          return selection.select(previous.domElement());
+        }
       } else {
         return ContentEdit.Root.get().trigger('previous-region', this.closest(function(node) {
           return node.type() === 'Fixture' || node.type() === 'Region';
@@ -3699,11 +3716,14 @@
         return;
       }
       ev.preventDefault();
-      next = this.nextContent();
+      ev.stopPropagation();
+      next = this.nextNavigable();
       if (next) {
         next.focus();
-        selection = new ContentSelect.Range(0, 0);
-        return selection.select(next.domElement());
+        if (next.content !== void 0) {
+          selection = new ContentSelect.Range(0, 0);
+          return selection.select(next.domElement());
+        }
       } else {
         return ContentEdit.Root.get().trigger('next-region', this.closest(function(node) {
           return node.type() === 'Fixture' || node.type() === 'Region';
@@ -3730,8 +3750,22 @@
       return this._keyLeft(ev);
     };
 
+    Text.prototype._atStart = function(selection) {
+      var start;
+      start = 0;
+      if (this.content.length() === 1 && this.content.charAt(0).c() === '') {
+        start = 1;
+      }
+      return selection.get()[0] >= 0 && selection.get()[0] <= start;
+    };
+
     Text.prototype._atEnd = function(selection) {
-      return selection.get()[0] >= this.content.length();
+      var len;
+      len = this.content.length();
+      if (len && this.content.charAt(len - 1).c() === '') {
+        len--;
+      }
+      return selection.get()[0] >= len;
     };
 
     Text.prototype._flagIfEmpty = function() {
@@ -3858,11 +3892,11 @@
       ev.preventDefault();
       selection = ContentSelect.Range.query(this._domElement);
       cursor = selection.get()[0] + 1;
-      if (selection.get()[0] === 0 && selection.isCollapsed()) {
+      if (this._atStart(selection) && selection.isCollapsed()) {
         this.content = new HTMLString.String('\n', true).concat(this.content);
       } else if (this._atEnd(selection) && selection.isCollapsed()) {
         this.content = this.content.concat(new HTMLString.String('\n', true));
-      } else if (selection.get()[0] === 0 && selection.get()[1] === this.content.length()) {
+      } else if (this._atStart(selection) && selection.get()[1] === this.content.length()) {
         this.content = new HTMLString.String('\n', true);
         cursor = 0;
       } else {
@@ -4015,6 +4049,7 @@
       this.a = a ? a : null;
       size = this.size();
       this._aspectRatio = size[1] / size[0];
+      this.navigate = true;
     }
 
     Image.prototype.cssTypeName = function() {
@@ -4316,6 +4351,7 @@
       this.sources = sources;
       size = this.size();
       this._aspectRatio = size[1] / size[0];
+      this.navigate = true;
     }
 
     Video.prototype.cssTypeName = function() {
