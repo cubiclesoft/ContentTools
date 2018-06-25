@@ -47,6 +47,9 @@ class _EditorApp extends ContentTools.ComponentUI
         @_inspector = null
         @_toolbox = null
 
+        # The number of modals being displayed.
+        @_modals = 0
+
         # Flag used to indicate that for a temporary period the editor should
         # allow empty regions to exist.
         @_emptyRegionsAllowed = false
@@ -100,6 +103,10 @@ class _EditorApp extends ContentTools.ComponentUI
         # Return the toolbox component for the editor
         return @_toolbox
 
+    modals: () ->
+        # Return the number of modals being displayed.
+        return @_modals
+
     # Methods
 
     busy: (busy) ->
@@ -115,6 +122,14 @@ class _EditorApp extends ContentTools.ComponentUI
         # If the ignition exists set the busy flag for it also
         if @_ignition
             @_ignition.busy(busy)
+
+    addedModal: () ->
+        # Increments the number of modals being displayed.
+        @_modals++
+
+    removedModal: () ->
+        # Decrements the number of modals being displayed.
+        @_modals--
 
     createPlaceholderElement: (region) ->
         # Return a placeholder element for the region (used to populate an empty
@@ -219,10 +234,10 @@ class _EditorApp extends ContentTools.ComponentUI
             # Move to the next region
             region = regions[index + 1]
 
-            # Is there a content element to move to?
+            # Is there a navigable element to move to?
             element = null
             for child in region.descendants()
-                if child.content != undefined
+                if child.navigate != undefined
                     element = child
                     break
 
@@ -230,7 +245,8 @@ class _EditorApp extends ContentTools.ComponentUI
             # the next region.
             if element
                 element.focus()
-                element.selection(new ContentSelect.Range(0, 0))
+                if element.content != undefined
+                    element.selection(new ContentSelect.Range(0, 0))
                 return
 
             ContentEdit.Root.get().trigger('next-region', region)
@@ -245,21 +261,22 @@ class _EditorApp extends ContentTools.ComponentUI
             # Move to the previous region
             region = regions[index - 1]
 
-            # Is there a content element to move to?
+            # Is there a navigable element to move to?
             element = null
             descendants = region.descendants()
             descendants.reverse()
             for child in descendants
-                if child.content != undefined
+                if child.navigate != undefined
                     element = child
                     break
 
             # If there is a content child move the selection to it else check
             # the next region.
             if element
-                length = element.content.length()
                 element.focus()
-                element.selection(new ContentSelect.Range(length, length))
+                if element.content != undefined
+                    length = element.content.length()
+                    element.selection(new ContentSelect.Range(length, length))
                 return
 
             ContentEdit.Root.get().trigger('previous-region', region)

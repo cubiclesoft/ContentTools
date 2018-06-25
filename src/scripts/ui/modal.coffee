@@ -38,11 +38,19 @@ class ContentTools.ModalUI extends ContentTools.WidgetUI
         if not @_allowScrolling
             ContentEdit.addCSSClass(document.body, 'ct--no-scroll')
 
+        # Update the editor to let it know that a new modal is mounted.
+        app = ContentTools.EditorApp.get()
+        app.addedModal()
+
         # Add interaction handlers
         @_addDOMEventListeners()
 
     unmount: () ->
         # Unmount the widget from the DOM
+
+        # Update the editor to let it know that the modal is unmounted.
+        app = ContentTools.EditorApp.get()
+        app.removedModal()
 
         # Allow the page to be scrolled again
         if not @_allowScrolling

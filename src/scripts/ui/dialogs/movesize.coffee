@@ -16,7 +16,7 @@ class ContentTools.MoveSizeDialog extends ContentTools.AnchoredDialogUI
         super()
 
         # Only show size inputs for resizeable elements
-        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize')
+        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize') and ContentEdit.RESIZE_CORNER_SIZE
             size = @_moveSizeElement.size();
             ContentEdit.addCSSClass(@_domElement, 'ct-anchored-dialog__move-size-buttons')
         else
@@ -45,7 +45,7 @@ class ContentTools.MoveSizeDialog extends ContentTools.AnchoredDialogUI
         @_domElementInner.appendChild(@_domMoveUpRightButton)
 
         # Create the input element for the width
-        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize')
+        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize') and ContentEdit.RESIZE_CORNER_SIZE
             @_domWidthInput = document.createElement('input')
             @_domWidthInput.setAttribute('class', 'ct-anchored-dialog__size-input ct-anchored-dialog__size-input-first')
             @_domWidthInput.setAttribute('name', 'width')
@@ -76,7 +76,7 @@ class ContentTools.MoveSizeDialog extends ContentTools.AnchoredDialogUI
         @_domElementInner.appendChild(@_domMoveDownRightButton)
 
         # Create the input element for the height
-        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize')
+        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize') and ContentEdit.RESIZE_CORNER_SIZE
             @_domHeightInput = document.createElement('input')
             @_domHeightInput.setAttribute('class', 'ct-anchored-dialog__size-input')
             @_domHeightInput.setAttribute('name', 'height')
@@ -219,7 +219,7 @@ class ContentTools.MoveSizeDialog extends ContentTools.AnchoredDialogUI
             @_move('down', 'right')
 
         # Input elements
-        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize')
+        if @_moveSizeElement instanceof ContentEdit.ResizableElement and @_moveSizeElement.can('resize') and ContentEdit.RESIZE_CORNER_SIZE
             @_domWidthInput.addEventListener 'keypress', (ev) =>
                 @_widthUpdated()
 

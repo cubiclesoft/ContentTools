@@ -235,6 +235,11 @@ class ContentTools.DialogUI extends ContentTools.WidgetUI
 
             @dispatchEvent(@createEvent('cancel'))
 
+        # Stop propagation of keydown events to the toolbox EXCEPT for the escape key.
+        @_domElement.addEventListener 'keydown', (ev) =>
+            if ev.keyCode != 27
+                ev.stopPropagation()
+
     _removeDOMEventListeners: () ->
 
         document.removeEventListener('keyup', @_handleEscape)

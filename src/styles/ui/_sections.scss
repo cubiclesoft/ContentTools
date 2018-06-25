@@ -106,9 +106,13 @@
             background: white;
             color: $text-color;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 1px);
             outline: none;
             text-align: right;
+
+            &:hover {
+                border: none;
+            }
 
             /**
              * If the contents of the sections input is invalid then the
